@@ -1,8 +1,6 @@
 VAC
 ===
 
-VAC setup is designed with three types/roles of virtual machines
-
 Vagrantfile
 =====
 
@@ -34,6 +32,11 @@ numNodes * zones.length = number_of_launched_virtual_machines
 ```
 
 So if we have numNodes = 2 here and we have 2 zones set, we will have 4 nodes + controller and master. So it's 6 virtual machines in total.
+
+What's next
+=====
+
+VAC setup is designed with three types/roles of virtual machines
 
 Controller
 =====
