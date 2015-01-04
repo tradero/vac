@@ -38,7 +38,7 @@ When things go wrong, let's revert everything to snapshot
 
 When "wrong" is not even close to describe how badly You're screwed ;-)
 
-*NOTE: please take a look inside of recreate.sh script - it's just a wrapper for all of 5 steps from above*
+*NOTE: please take a look inside of recreate.sh script - it's just a wrapper for other scripts (destroy, up, provision, snapshot)*
 
 ```
 ./scripts/recreate.sh
