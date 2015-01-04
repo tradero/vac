@@ -10,7 +10,7 @@ Main VAC VM which at this moment hosts only Nginx + Varnish to provide full feat
 
 TODO:
 
-- really simple internal DNS to help communicate between VMs and LAN using real hosts instead of patchin /etc/hosts all over the place
+- really simple internal DNS to help communicate between VMs and LAN using real hosts instead of patching /etc/hosts all over the place
 
 Master
 =====
