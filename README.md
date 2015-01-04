@@ -3,6 +3,38 @@ VAC
 
 VAC setup is designed with three types/roles of virtual machines
 
+Vagrantfile
+=====
+
+Comments in config section of Vagrantfile should explain everything. Just for sake of clarity:
+
+```
+// ---------------------------------------------------------------------------------------
+// Number of nodes to provision
+numNodes = 2
+
+ctrlAddr   = "10.0.1.5"
+masterAddr = "10.0.1.6"
+
+// IP Address Base for private network
+ipAddrBase = "10.0.1.10"
+
+// list of zones
+// zones = ["alpha", "bravo", "charlie", "delta", "echo", "foxtrot"]
+zones = ["alpha", "bravo"]
+// ---------------------------------------------------------------------------------------
+```
+
+*NOTE: zones are just a simple way to group VMs, You probably wont use it anyway - perhaps i should put two Vagrantfiles here, one with zones and one without them*
+
+BEWARE! Math with zones is simple but it's also simple to overlook things if You're one of those people who run code first - then look inside of files.
+
+```
+numNodes * zones.length = number_of_launched_virtual_machines
+```
+
+So if we have numNodes = 2 here and we have 2 zones set, we will have 4 nodes + controller and master. So it's 6 virtual machines in total.
+
 Controller
 =====
 
