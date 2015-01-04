@@ -1,6 +1,18 @@
 VAC
 ===
 
+Quick start
+=====
+
+```
+git clone https://github.com/tradero/vac.git
+cd vac
+./scripts/setup.sh
+./scripts/up.sh
+```
+
+Right, instead of vagrant up, we are using [up.sh](scripts/up.sh) script. You can read more about scripts/* in [HERE](scripts/)
+
 Vagrantfile
 =====
 
