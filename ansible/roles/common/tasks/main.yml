@@ -1,0 +1,90 @@
+- name: Ensure rpcbind is running
+  action: service name=rpcbind state=started enabled=yes
+#
+- name: Ensure {{nfsmount}} directory exists
+  action: file path={{nfsmount}} state=directory
+  tags:
+    - nfs
+
+- name: configure /etc/fstab on clients
+#  action: mount name={{nfsmount}} src={{nfsserver}}:{{nfspath}} fstype=nfs opts={{_nfsopts.stdout}} state=mounted
+  action: mount name={{nfsmount}} src={{nfsserver}}:{{nfspath}} fstype=nfs opts=rw state=mounted
+  tags:
+    - nfs
+
+# CBSD
+- name: Ensure required packages are present
+  pkgng: name={{ item }} state=present
+  with_items:
+    - git
+    - libssh2 
+    - rsync 
+    - sqlite3
+  tags:
+    - cbsd
+
+#- user: name=vac state=present shell=/bin/sh home=/nonexistent comment="vac user" password=$6$rounds=100000$F79QgYpUziVgmTBF$HZOGMkOYCDv4x/Oc/OnYxrMhc1ablLsTiLLxJF27MvgBNChA9tUz8g85aLlmRgb/0gTiCA67a88Jl4AN8hqmh/
+#- user: name=cbsd state=absent remove=yes
+- user: name=cbsd state=present shell=/bin/sh home=/nonexistent comment="vac user" password=$6$rounds=100000$F79QgYpUziVgmTBF$HZOGMkOYCDv4x/Oc/OnYxrMhc1ablLsTiLLxJF27MvgBNChA9tUz8g85aLlmRgb/0gTiCA67a88Jl4AN8hqmh/
+
+- git: repo=https://github.com/olevole/cbsd.git dest=/tmp/cbsd
+
+# ensure that CBSD will use 'vac' user instead of 'cbsd'
+#- replace: dest=/tmp/cbsd/cbsd.conf regexp='cbsduser="cbsd"' replace='cbsduser="vac"' backup=yes
+
+- name: Ensure bsdconfig directory exists
+  action: file path=/usr/local/libexec/bsdconfig state=directory
+  tags:
+    - cbsd
+
+- name: Build and install CBSD from source
+  command: "{{ item }}"
+  with_items:
+    - make -C /tmp/cbsd
+    - make -C /tmp/cbsd install
+  args:
+    creates: /usr/local/bin/cbsd
+  tags:
+    - cbsd
+
+## configuring cbsd
+
+- template: src=cbsd_initenv.j2 dest=/tmp/initenv.conf
+  tags:
+    - cbsd
+    
+- name: Setup CBSD environment
+  command: /usr/local/cbsd/sudoexec/initenv /tmp/initenv.conf
+  environment:
+    workdir: /usr/jails
+  tags:
+    - cbsd
+
+- name: Symlink CBSD stuff
+  file: src={{ item.path }} dest={{ item.dest }} state=link force=yes
+  with_items:
+    - { path: '/usr/local/cbsd/share/bsdconfig/cbsd', dest: '/usr/local/libexec/bsdconfig/cbsd' }
+    - { path: '/usr/jails/rc.d/cbsdrsyncd', dest: '/usr/local/etc/rc.d/cbsdrsyncd' }
+    - { path: '/usr/jails/rc.d/cbsdd', dest: '/usr/local/etc/rc.d/cbsdd' }
+    - { path: '{{ imagesdir }}', dest: '/usr/jails/import' }
+  ignore_errors: yes
+  tags:
+    - cbsd
+
+- service: name=cbsdd state=started
+  tags:
+    - cbsd
+    
+- service: name=cbsdrsyncd state=started
+  tags:
+    - cbsd
+
+- lineinfile: dest=/etc/rc.conf state=absent regexp="^sshd_flags.*"
+
+- service: name=sshd state=restarted
+  tags:
+    - cbsd
+
+- service: name=pf state=stopped
+  tags:
+    - cbsd

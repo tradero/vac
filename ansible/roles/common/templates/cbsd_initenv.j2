@@ -1,0 +1,12 @@
+
+cbsd_password="racker"
+nodename="{{ inventory_hostname }}"
+nodeip="{{ hostvars[inventory_hostname]['ansible_ssh_host'] }}"
+jnameserver="8.8.8.8"
+nodeippool="{{ ip_pool }}"
+natip="{{ hostvars[inventory_hostname]['ansible_ssh_host'] }}"
+nat_enable="pf"
+mdtmp="8"
+ipfw_enable="1"
+zfsfeat="1"
+

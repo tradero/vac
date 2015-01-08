@@ -12,7 +12,7 @@ We're using few vagrant plugins here, so let's ensure that we have all of them i
 ./scripts/setup.sh
 ```
 
-Bring up VMs cluster - without provisioning to be sure that setting up base system will be fast even if we wont be able to work in parallel
+Bring up VMs cluster - without provisioning to be sure that setting up base system will be fast even if we wont be able to work in parallel.
 
 ```
 ./scripts/up.sh
@@ -48,4 +48,10 @@ If You don't need your cluster anymore, just go with
 
 ```
 ./scripts/destroy.sh
+```
+
+If You have problems with 2 last scripts
+
+```
+vagrant destroy -f
 ```

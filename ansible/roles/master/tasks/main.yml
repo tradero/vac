@@ -1,0 +1,16 @@
+#- name: Ensure required packages by master are present
+#  pkgng: name={{ item }} state=present
+#  with_items:
+#    - mongodb
+#  tags:
+#    - vac
+#
+#- lineinfile: dest=/etc/rc.conf state=absent regexp="^mongod_enable.+"
+#- lineinfile: dest=/etc/rc.conf state=present line='mongod_enable="YES"'
+#
+#- name: Ensure mongodb is running
+#  service: name=mongod state=running
+
+# thans to vagrants plugin we have access to list of all nodes here
+- name: Add CBSD nodes
+  command: sh -c "for n in $(cat /etc/hosts | grep node | awk '{ print $1 }'); do cbsd node mode=add node=$n pw=racker port=22; done"

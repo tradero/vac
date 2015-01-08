@@ -1,0 +1,4 @@
+#- name: add node to cbsd inventory
+  #local_action: command cbsd node mode=add node={{ hostvars[inventory_hostname]['ansible_ssh_host'] }} pw=racker port={{ hostvars[inventory_hostname]['ansible_ssh_port'] }}
+#  local_action: command cbsd node mode=add node={{ inventory_hostname }} pw=racker port={{ hostvars[inventory_hostname]['ansible_ssh_port'] }}
+#  ignore_errors: yes

@@ -1,6 +1,9 @@
 #!/bin/sh
 
-PLUGINS="vagrant-vbox-snapshot vagrant-hostsupdater vagrant-proxyconf"
+# vagrant-hostsupdater for host
+# vagrant-hostmanager for guests
+
+PLUGINS="vagrant-vbox-snapshot vagrant-hostsupdater vagrant-hostmanager vagrant-proxyconf"
 
 for plugin in $PLUGINS; do
 

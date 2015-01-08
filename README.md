@@ -9,6 +9,9 @@ git clone https://github.com/tradero/vac.git
 cd vac
 ./scripts/setup.sh
 ./scripts/up.sh
+./scripts/provision.sh
+
+ssh root@master.vac.sys 'cbsd node mode=list'
 ```
 
 Right, instead of vagrant up, we are using [up.sh](scripts/up.sh) script. You can read more about scripts/* in [HERE](scripts/)
